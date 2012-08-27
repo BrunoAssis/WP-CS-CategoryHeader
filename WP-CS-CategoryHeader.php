@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP-CS-CategoryHeader
+Plugin Name: WP CineSplendor Category Header
 Plugin URI: http://github.com/BrunoAssis/WP-CS-CategoryHeader
 Description: Inserts some categories' descriptions in content header.
 Version: 0.1
@@ -26,7 +26,7 @@ License:
   
 */
 
-class WP-CS-CategoryHeader {
+class WP_CS_CategoryHeader {
 	 
 	/*--------------------------------------------*
 	 * Constructor
@@ -101,4 +101,4 @@ class WP-CS-CategoryHeader {
 
 }
 
-new WP-CS-CategoryHeader();
+new WP_CS_CategoryHeader();
