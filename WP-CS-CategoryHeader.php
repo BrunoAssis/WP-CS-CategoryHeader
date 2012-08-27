@@ -28,58 +28,35 @@ License:
 
 class WP_CS_CategoryHeader {
 	 
-	/*--------------------------------------------*
-	 * Constructor
-	 *--------------------------------------------*/
-	
 	/**
-	 * Initializes the plugin by setting localization, filters, and administration functions.
+	 * Initializes the plugin by setting filters, and administration functions.
 	 */
 	function __construct() {
 	
-		// Register admin styles and scripts
-		add_action( 'admin_print_styles', array( &$this, 'register_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( &$this, 'register_admin_scripts' ) );
-	
-		// Register site styles
-		add_action( 'wp_enqueue_scripts', array( &$this, 'register_plugin_styles' ) );
-
 		// Register main function.	
 		add_filter( 'the_content', array( &$this, 'add_header' ) );
 
 		// Register admin menu.
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu' ) );
+		add_action( 'admin_init', array( &$this, 'register_custom_settings' ) );
 
 	}
 	
-	/**
-	 * Registers and enqueues admin-specific styles.
-	 */
-	public function register_admin_styles() {
-	
-		wp_register_style( 'WP-CS-CategoryHeader-admin-styles', plugins_url( 'WP-CS-CategoryHeader/css/admin.css' ) );
-		wp_enqueue_style( 'WP-CS-CategoryHeader-admin-styles' );
-	
+	public function register_custom_settings() {
+		//register_setting('grupo', 'nome_do_setting', 'funcao_validacao');
+		register_setting( 'wp-cs-categoryheader-group', 'categories' );
+		register_setting( 'wp-cs-categoryheader-group', 'template' );
+		add_settings_section( 'wp-cs-categoryheader-main', 'Main Settings', array( &$this, 'main_section_text' ), 'wp-cs-categoryheader' );
+		add_settings_field( 'wp-cs-categoryheader-template', 'Template', array( &$this, 'setting_template' ), 'wp-cs-categoryheader', 'wp-cs-categoryheader-main' );
 	}
 
-	/**
-	 * Registers and enqueues admin-specific JavaScript.
-	 */	
-	public function register_admin_scripts() {
-	
-		wp_register_script( 'WP-CS-CategoryHeader-admin-script', plugins_url( 'WP-CS-CategoryHeader/js/admin.js' ) );
-		wp_enqueue_script( 'WP-CS-CategoryHeader-admin-script' );
-	
+	public function main_section_text() {
+		echo '<p>Main description of this section here.</p>';
 	}
-	
-	/**
-	 * Registers and enqueues plugin-specific styles.
-	 */
-	public function register_plugin_styles() {
-	
-		wp_register_style( 'WP-CS-CategoryHeader-plugin-styles', plugins_url( 'WP-CS-CategoryHeader/css/display.css' ) );
-		wp_enqueue_style( 'WP-CS-CategoryHeader-plugin-styles' );
-	
+
+	public function setting_template() {
+		$options = get_option('plugin_options');
+		echo "<input id='setting_template' name='template[text_string]' size='40' type='text' value='{$options['text_string']}' />";
 	}
 
 	/**
@@ -102,13 +79,18 @@ class WP_CS_CategoryHeader {
 	public function add_plugin_options() {
 		if ( !current_user_can( 'manage_options' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-		}
-		echo '<div class="wrap">';
-		echo '<p>Here is where the form would go if I actually had options.</p>';
-		echo '</div>';
+		} ?>
+		<div class="wrap">
+			<h2>Cine Splendor Category Header</h2>
+			<form method="post" action="options.php">
+				<?php settings_fields( 'wp-cs-categoryheader-group' ); ?>
+				<?php do_settings_sections( 'wp-cs-categoryheader-group' ); ?>
+				<?php submit_button(); ?>
+			</form>
+		</div>
+<?php
 	}
 
 }
 
 new WP_CS_CategoryHeader();
-define( 'WP_DEBUG', true);
