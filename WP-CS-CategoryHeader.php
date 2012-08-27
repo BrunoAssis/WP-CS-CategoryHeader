@@ -44,18 +44,7 @@ class WP_CS_CategoryHeader {
 		// Register site styles
 		add_action( 'wp_enqueue_scripts', array( &$this, 'register_plugin_styles' ) );
 		
-	    /*
-	     * TODO:
-	     * Define the custom functionality for your plugin. The first parameter of the
-	     * add_action/add_filter calls are the hooks into which your code should fire.
-	     *
-	     * The second parameter is the function name located within this class. See the stubs
-	     * later in the file.
-	     *
-	     * For more information: 
-	     * http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
-	     */
-	    add_filter( 'the_content()', array( $this, 'add_header()' ) );
+	    add_filter( 'the_content', array( &$this, 'add_header' ) );
 
 	}
 	
@@ -91,9 +80,9 @@ class WP_CS_CategoryHeader {
 	
 	public function add_header($content) {
 		$allowed_categories = array(1, 2, 3, 4, 5);
-		if ( is_single() && true )
+		if ( true )
 			$content = sprintf(
-				'CAIXINHA_AQUI%s',
+				'CAIXINHA_AQUI %s',
 				$content
 			);
 		return $content;
