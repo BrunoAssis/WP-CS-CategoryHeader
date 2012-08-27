@@ -80,9 +80,9 @@ class WP_CS_CategoryHeader {
 	
 	public function add_header($content) {
 		$allowed_categories = array(1, 2, 3, 4, 5);
-		if ( true )
+		if ( in_category($allowed_categories) )
 			$content = sprintf(
-				'CAIXINHA_AQUI %s',
+				'FUNFOU MANOLO %s',
 				$content
 			);
 		return $content;
