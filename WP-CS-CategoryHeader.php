@@ -27,6 +27,15 @@ License:
 */
 
 class WP_CS_CategoryHeader {
+	$_template = '<div id="better-author-bio-div">
+			<div class="better-author-bio-div-info">
+				<br />
+				<p class="better-author-bio-div-meta">Historiador, cursa atualmente doutorado, no qual estuda as relações entre cinema e história em períodos autoritários. Viciado em cinema, mantém blogs de crítica desde 2003. Costuma se identificar bastante com os personagens de Woody Allen.</p>
+				<ul>
+					<li class="first"><a href="http://cinesplendor.com.br/author/wallace/">View all posts by Wallace Andrioli</a></li>
+				</ul>
+			</div>
+		</div>';
 	 
 	/**
 	 * Initializes the plugin by setting filters, and administration functions.
@@ -63,10 +72,12 @@ class WP_CS_CategoryHeader {
 	 * Adds the main functionality of the plugin.
 	 */
 	public function add_header($content) {
-		$allowed_categories = array(1, 2, 3, 4, 5);
+		$allowed_categories = array(1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
 		if ( in_category($allowed_categories) )
+			$template = str_replace('{{CATEGORY}}', 'CATEGORIA', $this->_template);
 			$content = sprintf(
-				'FUNFOU MANOLO %s',
+				'%s %s',
+				$template,
 				$content
 			);
 		return $content;
