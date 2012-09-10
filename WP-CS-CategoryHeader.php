@@ -27,12 +27,12 @@ License:
 */
 
 class WP_CS_CategoryHeader {
-	$_template = '<div id="better-author-bio-div">
+	private $_template = '<div id="better-author-bio-div">
 			<div class="better-author-bio-div-info">
 				<br />
-				<p class="better-author-bio-div-meta">Historiador, cursa atualmente doutorado, no qual estuda as relações entre cinema e história em períodos autoritários. Viciado em cinema, mantém blogs de crítica desde 2003. Costuma se identificar bastante com os personagens de Woody Allen.</p>
+				<p class="better-author-bio-div-meta"><strong>{{CATEGORY_NAME}}</strong> - {{CATEGORY_DESCRIPTION}}</p>
 				<ul>
-					<li class="first"><a href="http://cinesplendor.com.br/author/wallace/">View all posts by Wallace Andrioli</a></li>
+					<li class="first"><a href="{{CATEGORY_LINK}}">Ver todos os posts dessa coluna</a></li>
 				</ul>
 			</div>
 		</div>';
@@ -73,13 +73,30 @@ class WP_CS_CategoryHeader {
 	 */
 	public function add_header($content) {
 		$allowed_categories = array(1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
-		if ( in_category($allowed_categories) )
-			$template = str_replace('{{CATEGORY}}', 'CATEGORIA', $this->_template);
-			$content = sprintf(
-				'%s %s',
-				$template,
-				$content
-			);
+		foreach ( $allowed_categories as $category ) {
+			if ( in_category($category) ) {
+				$template = str_replace(
+					array(
+						'{{CATEGORY_NAME}}',
+						'{{CATEGORY_DESCRIPTION}}',
+						'{{CATEGORY_LINK}}'
+					),
+					array(
+						get_the_category_by_ID($category),
+						category_description($category),
+						get_category_link($category)
+					),
+					$this->_template
+				);
+				$content = sprintf(
+					'%s %s',
+					$template,
+					$content
+				);
+				break;
+			}
+		}
+		
 		return $content;
 	}
 
