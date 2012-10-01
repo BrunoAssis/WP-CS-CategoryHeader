@@ -3,7 +3,7 @@
 Plugin Name: WP CineSplendor Category Header
 Plugin URI: http://github.com/BrunoAssis/WP-CS-CategoryHeader
 Description: Inserts some categories' descriptions in content header.
-Version: 0.1
+Version: 0.2
 Author: Bruno Assis
 Author URI: http://brunoassis.org
 Author Email: brunoassis@gmail.com
@@ -27,15 +27,10 @@ License:
 */
 
 class WP_CS_CategoryHeader {
-	private $_template = '<div id="better-author-bio-div">
-			<div class="better-author-bio-div-info">
-				<br />
-				<p class="better-author-bio-div-meta"><strong>{{CATEGORY_NAME}}</strong> - {{CATEGORY_DESCRIPTION}}</p>
-				<ul>
-					<li class="first"><a href="{{CATEGORY_LINK}}">Ver todos os posts dessa coluna</a></li>
-				</ul>
-			</div>
-		</div>';
+	private $_template = '<div id="entry-category-description" style="{{STYLE}}">
+				<strong style="text-transform:uppercase"><a class="url a fn n" href="{{CATEGORY_LINK}}">{{CATEGORY_NAME}}</a></strong>: {{CATEGORY_DESCRIPTION}}
+			</div>';
+	private $_style = 'padding: 2px; border: 1px dashed #D3D1C7; color: #848485; text-align: center;';
 	 
 	/**
 	 * Initializes the plugin by setting filters, and administration functions.
@@ -43,7 +38,7 @@ class WP_CS_CategoryHeader {
 	function __construct() {
 	
 		// Register main function.	
-		add_filter( 'the_content', array( &$this, 'add_header' ) );
+		add_filter( 'arras_postheader', array( &$this, 'add_description' ) );
 
 		// Register admin menu.
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu' ) );
@@ -71,27 +66,29 @@ class WP_CS_CategoryHeader {
 	/**
 	 * Adds the main functionality of the plugin.
 	 */
-	public function add_header($content) {
-		$allowed_categories = array(1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
+	public function add_description($content) {
+		$allowed_categories = array(1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501, 21);
 		foreach ( $allowed_categories as $category ) {
 			if ( in_category($category) ) {
 				$template = str_replace(
 					array(
+						'{{STYLE}}',
 						'{{CATEGORY_NAME}}',
 						'{{CATEGORY_DESCRIPTION}}',
 						'{{CATEGORY_LINK}}'
 					),
 					array(
+						$this->_style,
 						get_the_category_by_ID($category),
-						category_description($category),
+						str_replace(array("<p>", "</p>"), '', category_description($category)),
 						get_category_link($category)
 					),
 					$this->_template
 				);
 				$content = sprintf(
 					'%s %s',
-					$template,
-					$content
+					$content,
+					$template
 				);
 				break;
 			}
