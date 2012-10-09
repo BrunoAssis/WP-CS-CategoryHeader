@@ -30,7 +30,7 @@ class WP_CS_CategoryHeader {
 	private $_template = '<div id="entry-category-description" style="{{STYLE}}">
 				<strong style="text-transform:uppercase"><a class="url a fn n" href="{{CATEGORY_LINK}}">{{CATEGORY_NAME}}</a></strong>: {{CATEGORY_DESCRIPTION}}
 			</div>';
-	private $_style = 'padding: 2px; border: 1px dashed #D3D1C7; color: #848485; text-align: center;';
+	private $_style = 'padding: 2px; border: 1px dashed #D3D1C7; color: #848485; text-align: center; font-size: 12px';
 	 
 	/**
 	 * Initializes the plugin by setting filters, and administration functions.
