@@ -3,7 +3,7 @@
 Plugin Name: WP CineSplendor Category Header
 Plugin URI: http://github.com/BrunoAssis/WP-CS-CategoryHeader
 Description: Inserts some categories' descriptions in content header.
-Version: 0.2
+Version: 0.3
 Author: Bruno Assis
 Author URI: http://brunoassis.org
 Author Email: brunoassis@gmail.com
@@ -38,7 +38,7 @@ class WP_CS_CategoryHeader {
 	function __construct() {
 	
 		// Register main function.	
-		add_filter( 'arras_postheader', array( &$this, 'add_description' ) );
+		add_filter( 'the_title', array( &$this, 'add_description' ) );
 
 		// Register admin menu.
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu' ) );
@@ -67,7 +67,7 @@ class WP_CS_CategoryHeader {
 	 * Adds the main functionality of the plugin.
 	 */
 	public function add_description($content) {
-		$allowed_categories = array(1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
+		$allowed_categories = array(21, 1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
 		foreach ( $allowed_categories as $category ) {
 			if ( in_category($category) ) {
 				$template = str_replace(
@@ -87,8 +87,8 @@ class WP_CS_CategoryHeader {
 				);
 				$content = sprintf(
 					'%s %s',
-					$content,
-					$template
+					$template,
+					$content
 				);
 				break;
 			}
