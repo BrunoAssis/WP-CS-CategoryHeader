@@ -75,7 +75,7 @@ class WP_CS_CategoryHeader {
 	 * Adds the main functionality of the plugin.
 	 */
 	public function add_description($content) {
-		$allowed_categories = array(21, 1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
+		$allowed_categories = array(1502, 1500, 427, 2479, 1521, 634, 726, 70, 727, 79, 133, 8, 350, 301, 67, 516, 98, 59, 2184, 728, 1501);
 		foreach ( $allowed_categories as $category ) {
 			if ( in_category($category) ) {
 				$template = str_replace(
