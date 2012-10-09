@@ -35,7 +35,7 @@ class WP_CS_CategoryHeader {
                                 (function ($) {
                                   $(function () {
                                     var e = $("#entry-category-description");
-                                    $(".single-post").prepend(e);
+                                    $(".entry-title").before(e);
                                   });
                                 }(jQuery));
                               </script>';
